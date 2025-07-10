@@ -10,7 +10,7 @@ export default function TypingIndicator() {
       return;
     }
     setIsTyping(true);
-    const timeout = setTimeout(() => setIsTyping(false), 2000);
+    const timeout = setTimeout(() => setIsTyping(false), 100);
     return () => clearTimeout(timeout);
   }, [value]);
 

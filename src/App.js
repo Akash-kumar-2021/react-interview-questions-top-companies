@@ -1,36 +1,31 @@
 import React, { useState } from "react";
 import { companies } from "./data/companies";
 import CompanyCard from "./components/CompanyCard";
+import CodeModal from "./components/CodeModal";
 
-// --------- Theme Colors ---------
+// --- Theme config ---
 const themes = {
   dark: {
-    background: "linear-gradient(135deg, #11131a 0%, #23243b 100%)",
-    orb1: "radial-gradient(circle at 50% 50%, #FFD70033 0%, transparent 78%)",
-    orb2: "radial-gradient(circle at 60% 40%, #FFC40044 10%, transparent 80%)",
-    orb3: "radial-gradient(circle at 80% 90%, #FFEA70 15%, transparent 90%)",
-    headerText: "linear-gradient(95deg,#fffbe6 10%,#ffd700 48%,#ffb200 80%)",
-    subText: "#ffe366",
-    mainText: "#fffde2",
-    footerBg: "rgba(16,18,27,0.97)",
-    cardBg: "linear-gradient(120deg,rgba(16,18,27,0.95) 78%,#ffde8a17 100%)"
+    background: "linear-gradient(135deg, #171820 0%, #191c26 100%)",
+    headerText: "linear-gradient(95deg,#fffbe6 10%,#FFD700 48%,#ffb200 80%)",
+    subText: "#FFD700",
+    mainText: "#fffbe6",
+    footerBg: "rgba(23,24,32,0.98)"
   },
   light: {
-    background: "linear-gradient(135deg, #faf9f6 0%, #fffbe6 100%)",
-    orb1: "radial-gradient(circle at 50% 50%, #ffe37e2e 0%, transparent 78%)",
-    orb2: "radial-gradient(circle at 60% 40%, #ffd70024 10%, transparent 80%)",
-    orb3: "radial-gradient(circle at 80% 90%, #ffe588 15%, transparent 90%)",
-    headerText: "linear-gradient(95deg,#f5ce83 10%,#d7b000 48%,#ffae1a 80%)",
+    background: "linear-gradient(135deg, #fffbe6 0%, #fdf4b1 100%)",
+    headerText: "linear-gradient(95deg,#ffefb4 10%,#e3c341 50%,#FFD700 80%)",
     subText: "#bfa400",
     mainText: "#352900",
-    footerBg: "rgba(255,251,214,0.97)",
-    cardBg: "linear-gradient(120deg,#fffde2 88%,#ffe58a12 100%)"
+    footerBg: "rgba(255,251,214,0.98)"
   }
 };
 
 export default function App() {
   const [theme, setTheme] = useState("dark");
   const t = themes[theme];
+  const [modal, setModal] = useState({ open: false, code: "", title: "" });
+  const [hover, setHover] = useState(false);
 
   return (
     <div
@@ -52,42 +47,22 @@ export default function App() {
           top: 18, right: 22, zIndex: 1201,
           background: theme === "dark"
             ? "rgba(24, 22, 34, 0.87)"
-            : "rgba(255,255,255,0.84)",
-          color: theme === "dark" ? "#ffd700" : "#a07900",
-          border: `2.5px solid ${theme === "dark" ? "#ffd700" : "#ffe366"}`,
+            : "rgba(255,255,255,0.89)",
+          color: theme === "dark" ? "#FFD700" : "#bfa400",
+          border: `2.5px solid ${theme === "dark" ? "#FFD700" : "#ffe366"}`,
           borderRadius: 30,
           padding: "8px 28px",
           fontSize: 18,
           fontWeight: 700,
           cursor: "pointer",
-          boxShadow: "0 6px 22px 0 #00000022, 0 2px 6px 0 #ffd70022",
+          boxShadow: "0 6px 22px 0 #FFD70017, 0 2px 6px 0 #FFD70019",
           backdropFilter: "blur(8px)",
           outline: "none",
           transition: "all 0.22s cubic-bezier(.39,.6,.6,1.2)",
           userSelect: "none"
         }}>
-        {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
+        {theme === "dark" ? "☀️" : "🌙"}
       </button>
-
-      {/* Glowing Orbs */}
-      <div style={{
-        position: "absolute", left: "-12vw", top: "-10vw", width: 350, height: 250,
-        borderRadius: "50%",
-        background: t.orb1,
-        filter: "blur(36px)", zIndex: 0, pointerEvents: "none"
-      }} />
-      <div style={{
-        position: "absolute", right: "-8vw", top: "14vw", width: 210, height: 180,
-        borderRadius: "50%",
-        background: t.orb2,
-        filter: "blur(30px)", zIndex: 0, pointerEvents: "none"
-      }} />
-      <div style={{
-        position: "absolute", left: "55vw", bottom: "-7vw", width: 260, height: 140,
-        borderRadius: "50%",
-        background: t.orb3,
-        filter: "blur(24px)", zIndex: 0, pointerEvents: "none"
-      }} />
 
       {/* HEADER */}
       <header style={{
@@ -96,37 +71,108 @@ export default function App() {
         zIndex: 2,
         position: "relative"
       }}>
-        <div style={{
-          fontSize: "clamp(2.5rem, 6vw, 4rem)",
-          fontWeight: 900,
-          background: t.headerText,
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          letterSpacing: "-2.1px",
-          textShadow: "0 6px 34px #ffd70033, 0 1px 0 #fff",
-          // filter: "drop-shadow(0 1px 10px #ffb20055)"
-        }}>
-          React Interview Coding Questions by Company
-        </div>
+        <div
+      style={{
+        fontSize: "clamp(2.5rem, 6vw, 3.5rem)",
+        fontWeight: 900,
+        background: "linear-gradient(95deg,#e0e6ff 10%,#3fa9ff 70%,#002c57 120%)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        letterSpacing: "-2.1px",
+        textShadow: "0 6px 34px #aee1ff22, 0 1px 0 #fff",
+        cursor: "pointer",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 10,
+        position: "relative"
+      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+       <span style={{ position: "relative", display: "inline-block" }}>
+        {/* Animated blue-white glow */}
+        <span
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: `translate(-50%,-50%) scale(${hover ? 1.3 : 1})`,
+            width: hover ? 52 : 38,
+            height: hover ? 52 : 38,
+            borderRadius: "50%",
+            opacity: hover ? 0.7 : 0.16,
+            // background: "radial-gradient(circle, #66bfff 60%, #e0f6ff 80%, transparent 100%)",
+            filter: `blur(${hover ? 6 : 4}px)`,
+            transition: "all 0.36s cubic-bezier(.42,0,.4,1.32)",
+            zIndex: 0
+          }}
+        />
+        <span
+          role="img"
+          aria-label="bulb"
+          style={{
+            position: "relative",
+            zIndex: 1,
+            transition: "all 0.3s cubic-bezier(.46,1.54,.45,1.21)",
+            filter: hover ? "drop-shadow(0 0 4px #FFD700 )" : "none"
+          }}
+        >
+          💡
+        </span>
+      </span>
+      React Interview Coding Questions{" "}
+      <span style={{ position: "relative", display: "inline-block" }}>
+        {/* Animated blue-white glow */}
+        <span
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: `translate(-50%,-50%) scale(${hover ? 1.3 : 1})`,
+            width: hover ? 52 : 38,
+            height: hover ? 52 : 38,
+            borderRadius: "50%",
+            opacity: hover ? 0.7 : 0.16,
+            // background: "radial-gradient(circle, #66bfff 60%, #e0f6ff 80%, transparent 100%)",
+            filter: `blur(${hover ? 6 : 4}px)`,
+            transition: "all 0.36s cubic-bezier(.42,0,.4,1.32)",
+            zIndex: 0
+          }}
+        />
+        <span
+          role="img"
+          aria-label="bulb"
+          style={{
+            position: "relative",
+            zIndex: 1,
+            transition: "all 0.3s cubic-bezier(.46,1.54,.45,1.21)",
+            filter: hover ? "drop-shadow(0 0 4px #FFD700 )" : "none"
+          }}
+        >
+          💡
+        </span>
+      </span>
+    </div>
         <div style={{
           fontSize: "clamp(1.09rem, 2vw, 1.31rem)",
           color: t.subText,
           fontWeight: 600,
           marginTop: 13,
           letterSpacing: "0.01em",
-          textShadow: "0 2px 14px #ffd70022"
+          textShadow: "0 2px 14px #FFD70019"
         }}>
-          100+ real-world React coding tasks from actual company interviews.
+         100+ real-world React coding tasks Most-Asked by India's Leading Tech Companies
+    
         </div>
       </header>
 
-      {/* GRID */}
+      {/* CARD GRID */}
       <main
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
-          gap: "36px",
-          padding: "0 6vw 80px 6vw",
+          gap: "32px",
+          padding: "0 4vw 82px 4vw",
           maxWidth: 1700,
           margin: "0 auto",
           zIndex: 2,
@@ -134,35 +180,63 @@ export default function App() {
         }}
       >
         {companies.map((company, i) => (
-          <CompanyCard key={company.name + i} company={company} theme={theme} />
+          <CompanyCard
+            key={company.name + i}
+            company={company}
+            theme={theme}
+            onViewCode={q =>
+              setModal({ open: true, code: q.code, title: `${company.name} / ${q.title}` })
+            }
+          />
         ))}
       </main>
 
-      {/* Fixed Footer */}
+      {/* Global Code Modal */}
+      <CodeModal
+        open={modal.open}
+        code={modal.code}
+        title={modal.title}
+        onClose={() => setModal({ open: false, code: "", title: "" })}
+      />
+
+      {/* Footer */}
       <footer style={{
         position: "fixed",
         left: 0,
         bottom: 0,
         width: "100vw",
         textAlign: "center",
-        padding: "20px 0 16px",
+        padding: "16px 0 12px",
         background: t.footerBg,
-        fontSize: 18,
+        fontSize: 16.6,
         color: t.subText,
         letterSpacing: "0.05em",
         fontWeight: 700,
-        borderTop: "1.5px solid #ffd70044",
-        zIndex: 999,
-        boxShadow: "0 0px 22px #ffc40009",
+        borderTop: "1.5px solid #FFD70044",
+        zIndex: 100,
+        boxShadow: "0 0px 18px #FFD70013",
         backdropFilter: "blur(2.5px)",
         transition: "background 0.28s,color 0.19s"
       }}>
-        <span style={{ color: "#ffd700", fontWeight: 900 }}>© {new Date().getFullYear()}</span>
+        <span style={{ color: "#FFD700", fontWeight: 900 }}>© {new Date().getFullYear()}</span>
         {" | "}
         <span style={{ color: t.subText, fontWeight: 800 }}>React Interview UI</span>
         {" | "}
         <span style={{ color: t.mainText, fontWeight: 900 }}>Akash Kumar</span>
       </footer>
+      {/* Responsive Styles */}
+      <style>{`
+        @media (max-width: 800px) {
+          main {
+            grid-template-columns: 1fr !important;
+            gap: 19px !important;
+            padding: 0 2vw 95px 2vw !important;
+          }
+          header {
+            padding: 42px 0 19px 0 !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
