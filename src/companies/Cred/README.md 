@@ -1,0 +1,11 @@
+CRED
+--------------
+1.Create a TypingIndicator – show “User is typing…” & auto-hide after 2 sec idle.
+
+2.Make a DebouncedInput that delays API call for 600ms after typing.
+
+3.Auto-slide a carousel every 2 seconds.
+
+5.Create a splash screen that hides after 3 seconds.
+
+6.Reusable useTimeoutComponent (even though you can only use useState/useEffect).
